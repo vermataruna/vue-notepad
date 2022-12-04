@@ -24,7 +24,8 @@
         <Note 
             v-for="note in notes" 
             :key="note.id"
-            :note="note"    
+            :note="note"
+            @deleteNote="deleteNote"   
         />
 
     </div>
@@ -41,7 +42,7 @@ const notes = ref([
     {
         id: 'id1',
         content: 'My first sample note for testing' 
-    },
+    }, 
 ])
 
 const addNote = () => {
@@ -53,6 +54,12 @@ const addNote = () => {
     notes.value.unshift(note)
     newNote.value = ''
     newNoteRef.value.focus()
+}
+
+const deleteNote = noteId => {
+    notes.value = notes.value.filter(note => {
+        return note.id !== noteId
+    })
 }
 
 </script>
