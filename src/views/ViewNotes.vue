@@ -1,49 +1,41 @@
 <template>
     <div class="notes">
-        <div class="card has-background-success-dark p-4 mb-5">
-            <div class="field">
-            <div class="control">
-            <textarea class="textarea" 
-                      placeholder="Add a new note"
-                      v-model="newNote"
-                      ref="newNoteRef"/>
-            </div>
-            </div>
-
-            <div class="field is-grouped is-grouped-right">
-            <div class="control">
-            <button class="button is-link has-background-success"
+        <AddEditNote 
+            v-model="newNote"
+            ref="addEditNoteRef"
+            placeholder="Add new note"
+            >
+            <template #buttons>
+                <button 
+                    class="button is-link has-background-success"
                     @click="addNote"
                     :disabled="!newNote">
-                Add new note
-            </button>
-            </div>
-            </div>
-        </div>
-
+                    Add new note
+                </button>
+            </template>
+        </AddEditNote>
         <Note 
             v-for="note in storeNotes.notes" 
             :key="note.id"
             :note="note" 
         />
-
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import Note from '@/components/Notes/Note.vue';
+import AddEditNote from '@/components/Notes/AddEditNote.vue';
 import { useStoreNotes } from '@/stores/storeNotes.js'
 
 const newNote = ref('')
-const newNoteRef = ref(null)
-
 const storeNotes = useStoreNotes()
+const addEditNoteRef = ref('null')
 
 const addNote = () => {
     storeNotes.addNote(newNote.value)
     newNote.value = ''
-    newNoteRef.value.focus()
+    addEditNoteRef.value.focusTextarea()
 }
 
 </script>
