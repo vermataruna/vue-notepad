@@ -13,7 +13,8 @@
                       :placeholder="placeholder"
                       ref="textareaRef"
                       v-model="modelValue"
-                      @input="$emit('update:modelValue', modelValue)">
+                      @input="$emit('update:modelValue', modelValue)"
+                      v-autofocus>
             </textarea>
             </div>
             </div>
@@ -28,6 +29,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { vAutofocus } from '@/directives/vAutofocus.js'
 
 const textareaRef = ref(null)
 
@@ -54,7 +56,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']) 
 //  directly modifies the value coming from the parent component via v-model 
 //  without having to emit an event through the child component to listen 
-//  out the the event and then make a change
+//  out the event and then make a change
 
 const focusTextarea = () => {
     textareaRef.value.focus()
