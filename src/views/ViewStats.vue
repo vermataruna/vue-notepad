@@ -21,6 +21,7 @@
       <input type="text"
              class="input"
              placeholder="Do you like the application?"
+             v-model="loveApp"
              v-autofocus>
     </div>
 </template>
@@ -28,8 +29,13 @@
 <script setup>
 import { useStoreNotes } from '@/stores/storeNotes'
 import { vAutofocus } from '@/directives/vAutofocus.js'
+import { useWatchCharacters } from '@/use/useWatchCharacters.js'
+import {ref} from "vue";
 
 const storeNotes = useStoreNotes()
+
+const loveApp = ref('')
+useWatchCharacters(loveApp, 50)
 
 
 </script>
