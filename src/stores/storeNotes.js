@@ -1,22 +1,31 @@
 import { defineStore } from 'pinia'
+import { collection, onSnapshot } from "firebase/firestore"
+import { db } from '@/js/firebase'
 
 export const useStoreNotes = defineStore('storeNotes', {
     //state is only for storing data
   state: () => {
     return { 
-        notes: [
-            {
-                id: 'id1',
-                content: 'My first sample note for testing' 
-            },
-            {
-                id: 'id2',
-                content: 'My second sample note for testing' 
-            },
-        ]
+        notes: []
      }
   },
   actions: {
+    // todo: unsubscribe to onSnapshot hook (as it keeps on running until stopped)
+    // reference: https://firebase.google.com/docs/firestore/query-data/listen?hl=en&authuser=0#listen_to_multiple_documents_in_a_collection
+    
+    async getNotes() {
+    onSnapshot(collection(db,"notes"), (querySnapshot) => {
+        let notes = []
+        querySnapshot.forEach((doc) => {
+            let note = {
+                id: doc.id,
+                content: doc.data().content
+            }
+            notes.push(note)
+        })
+        this.notes = notes
+        })
+    },
     addNote(newNote) {
         let currentDate = new Date().getTime(), id = currentDate.toString()
         let note = {
