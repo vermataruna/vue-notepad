@@ -11,6 +11,7 @@
                     aria-label="menu" 
                     aria-expanded="false" 
                     data-target="navbarBasicExample"
+                    ref="navBarBurgerRef"
                     @click.prevent="showMobileNav = !showMobileNav"
                 >
                 <span aria-hidden="true"></span>
@@ -21,6 +22,7 @@
             <div id="navbarBasicExample" 
                  class="navbar-menu"
                  :class="{'is-active' : showMobileNav }"
+                 ref="navbarMenuRef"
             >
                 <div class="navbar-end">
                     <RouterLink
@@ -45,9 +47,19 @@
 
 <script setup>
 import { ref } from 'vue';
+import { onClickOutside } from '@vueuse/core'
 
 //mobile navbar
 const showMobileNav = ref(false)
+
+//click outside to close
+const navbarMenuRef = ref('')
+const navBarBurgerRef = ref('')
+onClickOutside(navbarMenuRef, () => {
+  showMobileNav.value = false
+}, {
+  ignore: [navBarBurgerRef]
+})
 
 </script>
 
