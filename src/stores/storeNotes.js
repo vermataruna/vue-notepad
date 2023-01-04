@@ -1,8 +1,13 @@
 import { defineStore } from 'pinia'
-import { collection, onSnapshot, doc, setDoc, deleteDoc, updateDoc } from "firebase/firestore"
+import {
+    collection, onSnapshot,
+    doc, setDoc, deleteDoc, updateDoc,
+    query, orderBy
+} from "firebase/firestore"
 import { db } from '@/js/firebase'
 
 const notesCollectionRef = collection(db, "notes")
+const notesCollectionQuery = query(notesCollectionRef, orderBy("id", "desc"));
 
 export const useStoreNotes = defineStore('storeNotes', {
     //state is only for storing data
@@ -16,7 +21,7 @@ export const useStoreNotes = defineStore('storeNotes', {
     // reference: https://firebase.google.com/docs/firestore/query-data/listen?hl=en&authuser=0#listen_to_multiple_documents_in_a_collection
     
     async getNotes() {
-    onSnapshot(notesCollectionRef, (querySnapshot) => {
+    onSnapshot(notesCollectionQuery, (querySnapshot) => {
         let notes = []
         querySnapshot.forEach((doc) => {
             let note = {
@@ -31,6 +36,7 @@ export const useStoreNotes = defineStore('storeNotes', {
     async addNote(newNote) {
         let currentDate = new Date().getTime(), id = currentDate.toString()
         await setDoc(doc(notesCollectionRef, id), {
+            id,
             content: newNote,
         });
     },
