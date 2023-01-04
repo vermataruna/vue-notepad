@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { collection, onSnapshot, doc, setDoc, deleteDoc } from "firebase/firestore"
+import { collection, onSnapshot, doc, setDoc, deleteDoc, updateDoc } from "firebase/firestore"
 import { db } from '@/js/firebase'
 
 const notesCollectionRef = collection(db, "notes")
@@ -37,9 +37,10 @@ export const useStoreNotes = defineStore('storeNotes', {
     async deleteNote(nodeId) {
         await deleteDoc(doc(notesCollectionRef,nodeId))
     },
-    updateNote(id, content) {
-        const index = this.notes.findIndex(note => note.id === id)
-        this.notes[index].content = content
+    async updateNote(id, content) {
+        await updateDoc(doc(notesCollectionRef, id), {
+            content
+        })
     }
   },
   getters: {
