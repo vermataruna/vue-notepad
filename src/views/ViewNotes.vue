@@ -25,6 +25,12 @@
               :key="note.id"
               :note="note"
           />
+          <div
+              v-if="!storeNotes.notes.length"
+              class="is-size-5 has-text-centered has-text-grey-light is-family-monospace py-6"
+          >
+            No notes :(
+          </div>
         </template>
     </div>
 </template>
