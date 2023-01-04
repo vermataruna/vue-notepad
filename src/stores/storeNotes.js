@@ -13,7 +13,8 @@ export const useStoreNotes = defineStore('storeNotes', {
     //state is only for storing data
   state: () => {
     return { 
-        notes: []
+        notes: [],
+        notesLoaded: false
      }
   },
   actions: {
@@ -21,18 +22,20 @@ export const useStoreNotes = defineStore('storeNotes', {
     // reference: https://firebase.google.com/docs/firestore/query-data/listen?hl=en&authuser=0#listen_to_multiple_documents_in_a_collection
     
     async getNotes() {
-    onSnapshot(notesCollectionQuery, (querySnapshot) => {
-        let notes = []
-        querySnapshot.forEach((doc) => {
-            let note = {
-                id: doc.id,
-                content: doc.data().content,
-                date: doc.data().date
-            }
-            notes.push(note)
-        })
-        this.notes = notes
-        })
+        this.notesLoaded = false
+        onSnapshot(notesCollectionQuery, (querySnapshot) => {
+            let notes = []
+            querySnapshot.forEach((doc) => {
+                let note = {
+                    id: doc.id,
+                    content: doc.data().content,
+                    date: doc.data().date
+                }
+                notes.push(note)
+            })
+                this.notes = notes
+                this.notesLoaded = true
+            })
     },
     async addNote(newNote) {
         let currentDate = new Date().getTime(), date = currentDate.toString()
