@@ -16,7 +16,7 @@
                 <div class="title has-text-centered">
                     {{ formTitle }}
                 </div>
-                <form @click.prevent="onSubmit">
+                <form v-on:submit.prevent="submit">
                     <div class="field">
                         <label class="label">Email</label>
                         <div class="control">
@@ -53,7 +53,9 @@
 
 <script setup>
 import { ref, computed, reactive } from 'vue'
+import { useStoreAuth } from '@/stores/storeAuth'
 
+const storeAuth = useStoreAuth()
 
 const register = ref(false)
 
@@ -66,16 +68,16 @@ const credentials = reactive({
     password: ''
 })
 
-const onSubmit = () => {
+const submit = () => {
     if (!credentials.email || !credentials.password) {
         alert("Please enter email and password!")
     }
     else {
         if(register.value) {
-            //register user
+            storeAuth.registerUser(credentials)
         } 
         else {
-            //login user
+          storeAuth.loginUser(credentials)
         }
     }
 }
