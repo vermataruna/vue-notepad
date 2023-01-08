@@ -15,14 +15,14 @@ export const useStoreAuth = defineStore('storeAuth', {
   },
   actions: {
     init() {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          this.user.id = user.uid
-          this.user.email = user.email
-        } else {
-          this.user = {}
-        }
-      });
+    //   onAuthStateChanged(auth, (user) => {
+    //     if (user) {
+    //       this.user.id = user.uid
+    //       this.user.email = user.email
+    //     } else {
+    //       this.user = {}
+    //     }
+    //   });
     },
     registerUser(credentials) {
       createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
