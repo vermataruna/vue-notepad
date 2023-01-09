@@ -26,10 +26,11 @@
             >
                 <div class="navbar-start">
                     <button
+                        v-if="storeAuth.user.id"
                         class="button is-small is-info mt-3 ml-3"
                         @click="signOutUser"
                     >
-                        Log out
+                        Log out {{ storeAuth.user.email }}
                     </button>
                 </div>
                 <div class="navbar-end">
@@ -73,9 +74,10 @@ onClickOutside(navbarMenuRef, () => {
 const storeAuth = useStoreAuth()
 
 const signOutUser = () => {
-  storeAuth.signOutUser()
+    showMobileNav.value = false
+    storeAuth.signOutUser()
 }
-
+ 
 </script>
 
 <style>
