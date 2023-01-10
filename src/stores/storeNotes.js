@@ -5,9 +5,10 @@ import {
     query, orderBy
 } from "firebase/firestore"
 import { db } from '@/js/firebase'
+import { useStoreAuth } from '@/stores/storeAuth'
 
-const notesCollectionRef = collection(db, "notes")
-const notesCollectionQuery = query(notesCollectionRef, orderBy("date", "desc"));
+let notesCollectionRef
+let notesCollectionQuery
 
 export const useStoreNotes = defineStore('storeNotes', {
     //state is only for storing data
@@ -18,6 +19,13 @@ export const useStoreNotes = defineStore('storeNotes', {
      }
   },
   actions: {
+
+    init() {
+        const storeAuth = useStoreAuth()
+        const notesCollectionRef = collection(db, "users", storeAuth.user.id, "notes")
+        const notesCollectionQuery = query(notesCollectionRef, orderBy("date", "desc"));
+    },
+
     // todo: unsubscribe to onSnapshot hook (as it keeps on running until stopped)
     // reference: https://firebase.google.com/docs/firestore/query-data/listen?hl=en&authuser=0#listen_to_multiple_documents_in_a_collection
     
