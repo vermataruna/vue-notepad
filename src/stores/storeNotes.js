@@ -19,11 +19,12 @@ export const useStoreNotes = defineStore('storeNotes', {
      }
   },
   actions: {
-
+ 
     init() {
         const storeAuth = useStoreAuth()
         const notesCollectionRef = collection(db, "users", storeAuth.user.id, "notes")
-        const notesCollectionQuery = query(notesCollectionRef, orderBy("date", "desc"));
+        const notesCollectionQuery = query(notesCollectionRef, orderBy("date", "desc"))
+        this.getNotes()
     },
 
     // todo: unsubscribe to onSnapshot hook (as it keeps on running until stopped)
@@ -44,6 +45,9 @@ export const useStoreNotes = defineStore('storeNotes', {
                 this.notes = notes
                 this.notesLoaded = true
             })
+    },
+    clearNotes() {
+        this.notes = []
     },
     async addNote(newNote) {
         let currentDate = new Date().getTime(), date = currentDate.toString()
