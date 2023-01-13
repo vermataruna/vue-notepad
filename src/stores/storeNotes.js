@@ -28,6 +28,7 @@ export const useStoreNotes = defineStore('storeNotes', {
     },
 
     // todo: unsubscribe to onSnapshot hook (as it keeps on running until stopped)
+
     // reference: https://firebase.google.com/docs/firestore/query-data/listen?hl=en&authuser=0#listen_to_multiple_documents_in_a_collection
     
     async getNotes() {
