@@ -22,8 +22,8 @@ export const useStoreNotes = defineStore('storeNotes', {
  
     init() {
         const storeAuth = useStoreAuth()
-        const notesCollectionRef = collection(db, "users", storeAuth.user.id, "notes")
-        const notesCollectionQuery = query(notesCollectionRef, orderBy("date", "desc"))
+        notesCollectionRef = collection(db, 'users', storeAuth.user.id , 'notes') 
+        notesCollectionQuery = query(notesCollectionRef, orderBy("date", "desc"))
         this.getNotes()
     },
 
@@ -35,17 +35,17 @@ export const useStoreNotes = defineStore('storeNotes', {
         this.notesLoaded = false
         onSnapshot(notesCollectionQuery, (querySnapshot) => {
             let notes = []
-            querySnapshot.forEach((doc) => {
-                let note = {
-                    id: doc.id,
-                    content: doc.data().content,
-                    date: doc.data().date
-                }
-                notes.push(note)
+            querySnapshot.forEach(doc => {
+            let note = {
+                        id: doc.id,
+                        content: doc.data().content,
+                        date: doc.data().date
+                    }
+            notes.push(note)
+            this.notes = notes
+            this.notesLoaded = true
             })
-                this.notes = notes
-                this.notesLoaded = true
-            })
+        });
     },
     clearNotes() {
         this.notes = []
