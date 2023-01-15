@@ -9,6 +9,7 @@ import { useStoreAuth } from '@/stores/storeAuth'
 
 let notesCollectionRef
 let notesCollectionQuery
+let getNotesSnapshot = null
 
 export const useStoreNotes = defineStore('storeNotes', {
     //state is only for storing data
@@ -27,13 +28,11 @@ export const useStoreNotes = defineStore('storeNotes', {
         this.getNotes()
     },
 
-    // todo: unsubscribe to onSnapshot hook (as it keeps on running until stopped)
-
     // reference: https://firebase.google.com/docs/firestore/query-data/listen?hl=en&authuser=0#listen_to_multiple_documents_in_a_collection
     
     async getNotes() {
         this.notesLoaded = false
-        onSnapshot(notesCollectionQuery, (querySnapshot) => {
+        getNotesSnapshot = onSnapshot(notesCollectionQuery, (querySnapshot) => {
             let notes = []
             querySnapshot.forEach(doc => {
             let note = {
@@ -42,13 +41,15 @@ export const useStoreNotes = defineStore('storeNotes', {
                         date: doc.data().date
                     }
             notes.push(note)
+            })
             this.notes = notes
             this.notesLoaded = true
-            })
         });
     },
     clearNotes() {
         this.notes = []
+        //unsubscribe to onSnapshot hook (as it keeps on running until stopped)
+        if(getNotesSnapshot) getNotesSnapshot() 
     },
     async addNote(newNote) {
         let currentDate = new Date().getTime(), date = currentDate.toString()
