@@ -1,6 +1,7 @@
 # vue-notes
 
 Basic note keeping application build using Vue 3 in Vite.
+Click here to access the app: [VueNotes](https://vuenotepad.web.app/#/auth)
 
 ## Prerequisites
 * node version >= v18.6.0
